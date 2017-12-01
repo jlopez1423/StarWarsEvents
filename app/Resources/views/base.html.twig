@@ -1,33 +1,39 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta charset="UTF-8" />
-        <title>
+<head>
+    <meta charset="UTF-8" />
+    <title>
+        {#{%- if block('title') -%}#}
+            {#{{ block('title') }} | Starwars Events#}
+        {#{%- else -%}#}
+            {#Events from a Galaxy, far far away#}
+        {#{%- endif -%}#}
+    </title>
 
-            {%- if block( 'title' ) -%}
+    {% block stylesheets %}
+        <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"/>
 
-                {{- block('title') -}} | Starwars Events
+        {% stylesheets
+            'bundles/event/css/event.css'
+            'bundles/event/css/events.css'
+            'bundles/event/css/main.css'
+            filter='cssrewrite'
+        %}
+            <link rel="stylesheet" href="{{ asset_url }}" />
+        {% endstylesheets %}
+    {% endblock %}
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+</head>
+<body>
+{% if app.session.flashBag.has('success') %}
+    <div class="alert alert-success">
+        {% for msg in app.session.flashBag.get('success') %}
+            {{ msg }}
+        {% endfor %}
+    </div>
+{% endif %}
 
-            {%- else -%}
-                Events from a Galaxy Far Far Away.
-            {%- endif -%}
-
-        </title>
-        {% block stylesheets %}
-            {% stylesheets
-                'bundles/event/css/event.css'
-                'bundles/event/css/events.css'
-                'bundles/event/css/main.css'
-                filter='cssrewrite'
-            %}
-
-            <link rel="stylesheet" href="{{ asset_url }}"/>
-            {% endstylesheets %}
-        {% endblock %}
-        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
-    </head>
-    <body>
-        {% block body %}{% endblock %}
-        {% block javascripts %}{% endblock %}
-    </body>
+{% block body %}{% endblock %}
+{% block javascripts %}{% endblock %}
+</body>
 </html>

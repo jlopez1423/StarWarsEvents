@@ -38,4 +38,14 @@ class SecurityController extends Controller
         );
 
     }
+
+    /**
+     * @Route("/login_check", name="login_check")
+     */
+    public function loginCheckAction()
+    {
+
+        // Not going to put anything here
+        // This is never executed, symfony intercepts requests to this.
+    }
 }
