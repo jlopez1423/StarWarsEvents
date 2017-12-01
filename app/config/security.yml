@@ -28,4 +28,4 @@ security:
 
     access_control:
          - { path: ^/new, roles: ROLE_USER }
-         - { path: ^/craete, roles: ROLE_USER }
+         - { path: ^/create, roles: ROLE_USER }
