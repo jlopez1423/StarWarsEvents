@@ -48,4 +48,14 @@ class SecurityController extends Controller
         // Not going to put anything here
         // This is never executed, symfony intercepts requests to this.
     }
+
+    /**
+     * @Route("/logout", name="logout")
+     */
+    public function logoutAction()
+    {
+
+        // Not going to put anything here
+        // This is never executed, symfony intercepts requests to this.
+    }
 }
