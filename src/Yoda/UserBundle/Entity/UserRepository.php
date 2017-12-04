@@ -14,4 +14,14 @@ use Doctrine\ORM\EntityRepository;
 class UserRepository extends EntityRepository
 {
 
+    public function findOneByUsernameOrEmail($username)
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.username = :username OR u.email = :email')
+            ->setParameter('username', $username)
+            ->setParameter('email', $username)
+            ->getQuery()
+            ->getOneOrNullResult()
+            ;
+    }
 }
