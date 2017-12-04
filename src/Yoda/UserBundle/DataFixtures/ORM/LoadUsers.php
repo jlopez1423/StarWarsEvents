@@ -20,6 +20,7 @@ class LoadUsers implements FixtureInterface, ContainerAwareInterface
         $user = new User();
         $user->setUsername( 'darth');
         $user->setPassword( $this->encodePassword($user, 'darthpass' ) );
+        $user->setEmail( 'darth@deathstar.com' );
         $manager->persist( $user );
 
 
@@ -27,6 +28,7 @@ class LoadUsers implements FixtureInterface, ContainerAwareInterface
         $admin->setUsername( 'wayne' );
         $admin->setPassword( $this->encodePassword($admin, 'waynepass' ) );
         $admin->setRoles( array( 'ROLE_ADMIN' ) );
+        $admin->setEmail('wayne@deathstar.com' );
         $manager->persist( $admin );
 
         // the queries aren't done until now

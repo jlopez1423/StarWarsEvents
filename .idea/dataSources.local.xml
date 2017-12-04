@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="dataSourceStorageLocal">
+    <data-source name="StarWars Tutorial" uuid="7a72dc22-d1c8-4c2d-9f21-d65ff5d25549">
+      <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" />
+      <secret-storage>master_key</secret-storage>
+      <first-sync>true</first-sync>
+      <user-name>vagrant</user-name>
+      <introspection-schemas>*:*</introspection-schemas>
+      <ssh-properties>
+        <enabled>true</enabled>
+        <proxy-host>192.168.10.10</proxy-host>
+        <proxy-port>22</proxy-port>
+        <user>vagrant</user>
+        <use-password>false</use-password>
+        <auth-type>KEY_PAIR</auth-type>
+        <private-key-path>$USER_HOME$/.ssh/id_rsa</private-key-path>
+      </ssh-properties>
+    </data-source>
+  </component>
+</project>

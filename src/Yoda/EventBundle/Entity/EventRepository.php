@@ -12,4 +12,13 @@ use Doctrine\ORM\EntityRepository;
  */
 class EventRepository extends EntityRepository
 {
+
+    //Anything written in here gets precedence over the EntityRepository base class
+//    public function findAll()
+//    {
+//
+//        die( 'NOOOOO!' );
+//
+//    }
+
 }
