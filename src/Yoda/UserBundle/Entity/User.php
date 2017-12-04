@@ -3,7 +3,7 @@
 namespace Yoda\UserBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
 /**
  * User
@@ -11,7 +11,7 @@ use Symfony\Component\Security\Core\User\UserInterface;
  * @ORM\Table(name="yoda_user")
  * @ORM\Entity(repositoryClass="Yoda\UserBundle\Entity\UserRepository")
  */
-class User implements UserInterface
+class User implements AdvancedUserInterface
 {
     /**
      * @var integer
@@ -36,6 +36,20 @@ class User implements UserInterface
      */
     private $password;
 
+
+    /**
+     * @var array
+     *
+     * @ORM\Column(type="json_array")
+     */
+    private $roles = array();
+
+    /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_active", type="boolean")
+     */
+    private $isActive = true;
 
     /**
      * Get id
@@ -98,8 +112,19 @@ class User implements UserInterface
 
     public function getRoles()
     {
+        $roles = $this->roles;
 
-        return array( 'ROLE_USER' ); // Hard coded for now
+        $roles[] = 'ROLE_USER';
+        return array_unique( $roles );
+
+    }
+
+    public function setRoles( array $roles )
+    {
+
+        $this->roles = $roles;
+
+        return $this;
 
     }
 
@@ -118,9 +143,52 @@ class User implements UserInterface
 
     }
 
+
+    public function getIsActive()
+    {
+
+        return $this->isActive;
+
+    }
+
+
+    public function setIsActive( $isActive )
+    {
+
+        $this->isActive = $isActive;
+
+        return $this;
+
+    }
     public function __toString()
     {
         return $this->getUsername();
+    }
+
+    public function isAccountNonExpired()
+    {
+
+        return true;
+
+    }
+
+    public function isAccountNonLocked()
+    {
+
+        return true;
+
+    }
+
+    public function isCredentialsNonExpired()
+    {
+
+        return true;
+
+    }
+
+    public function isEnabled()
+    {
+        return $this->getIsActive();
     }
 
 }
