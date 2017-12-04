@@ -32,6 +32,6 @@ class RegisterController extends Controller
 
         // todo - render a template
 
-        return array( 'form' => $form );
+        return array( 'form' => $form->createView() );
     }
 }
