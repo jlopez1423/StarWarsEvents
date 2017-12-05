@@ -4,9 +4,8 @@
     <data-source source="LOCAL" name="StarWars Tutorial" uuid="7a72dc22-d1c8-4c2d-9f21-d65ff5d25549">
       <driver-ref>mysql</driver-ref>
       <synchronize>true</synchronize>
-      <configured-by-url>true</configured-by-url>
       <jdbc-driver>com.mysql.jdbc.Driver</jdbc-driver>
-      <jdbc-url>jdbc:mysql://127.0.0.1:3306/homestead</jdbc-url>
+      <jdbc-url>jdbc:mysql://127.0.0.1:3306/yoda</jdbc-url>
       <driver-properties>
         <property name="autoReconnect" value="true" />
         <property name="zeroDateTimeBehavior" value="convertToNull" />

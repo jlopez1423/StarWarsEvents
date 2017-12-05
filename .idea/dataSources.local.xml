@@ -5,7 +5,7 @@
       <database-info product="" version="" jdbc-version="" driver-name="" driver-version="" />
       <secret-storage>master_key</secret-storage>
       <first-sync>true</first-sync>
-      <user-name>vagrant</user-name>
+      <user-name>homestead</user-name>
       <introspection-schemas>*:*</introspection-schemas>
       <ssh-properties>
         <enabled>true</enabled>
