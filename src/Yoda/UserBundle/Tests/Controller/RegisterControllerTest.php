@@ -13,7 +13,7 @@ class RegisterControllerTest extends WebTestCase
         $crawler = $client->request('GET', '/register');
 
         $this->assertEquals( 200, $client->getResponse()->getStatusCode() );
-        $this->assertContains( 'Registers', $client->getResponse()->getContent() );
+        $this->assertContains( 'Register', $client->getResponse()->getContent() );
 
         $userNameVal = $crawler
             ->filter( '#user_register_username')
