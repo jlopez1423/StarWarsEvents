@@ -25,7 +25,14 @@ class RegisterController extends Controller
     public function registerAction( Request $request )
     {
 
-        $form = $this->createFormBuilder()
+        // Adding default data
+       $user = new User();
+       $user->setUsername( 'Leia' );
+
+
+        $form = $this->createFormBuilder( $user, array(
+            'data_class' => 'Yoda\UserBundle\Entity\User'
+        ) )
             ->add( 'username', 'text' )
             ->add( 'email', 'email' )
             ->add( 'password', 'repeated', array(
@@ -40,13 +47,9 @@ class RegisterController extends Controller
         if( $form->isValid() )
         {
 
-            $data = $form->getData();
+            $user = $form->getData();
 
-            //Need to do some refactoring here
-            $user = new User();
-            $user->setUsername( $data[ 'username' ] );
-            $user->setEmail( $data[ 'email' ] );
-            $user->setPassword( $this->encodePassword( $user, $data[ 'password' ] ) );
+            $user->setPassword( $this->encodePassword(  $user, $user->getPassword() ) );
 
             $em = $this->getDoctrine()->getManager();
             $em->persist( $user );
