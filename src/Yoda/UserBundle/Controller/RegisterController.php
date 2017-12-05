@@ -27,39 +27,37 @@ class RegisterController extends Controller
     public function registerAction( Request $request )
     {
 
-        // Adding default data
-       $user = new User();
-       $user->setUsername( 'Leia' );
+        $user = new User();
+        $user->setUsername('Leia');
 
+        $form = $this->createForm(new RegisterFormType(), $user);
 
-        $form = $this->createForm( new RegisterFormType(), $user );
-
-
-        $form->handleRequest( $request );
-
-        if( $form->isValid() )
-        {
-
+        $form->handleRequest($request);
+        if ($form->isValid()) {
             $user = $form->getData();
 
-            $user->setPassword( $this->encodePassword(  $user, $user->getPlainPassword() ) );
+            $user->setPassword(
+                $this->encodePassword($user, $user->getPlainPassword())
+            );
 
             $em = $this->getDoctrine()->getManager();
-            $em->persist( $user );
+            $em->persist($user);
             $em->flush();
+
+            $request->getSession()
+                ->getFlashBag()
+                ->add('success', 'Welcome to the Death Star! Have a magical day!')
+            ;
 
             $this->authenticateUser( $user );
 
-            $request->getSession()->getFlashbag()
-                ->add( 'success', 'Welcome to the Death Star! Have a magical day!' );
+            $url = $this->generateUrl('event');
 
-            $url = $this->generateUrl( 'event' );
-
-            return $this->redirect( $url );
-
+            return $this->redirect($url);
         }
 
-        return array( 'form' => $form->createView() );
+        return array('form' => $form->createView());
+
     }
 
 
