@@ -28,6 +28,9 @@ class EventController extends Controller
      */
     public function indexAction()
     {
+
+        $user = $this->getUser();
+
         $em = $this->getDoctrine()->getManager();
 
         $entities = $em->getRepository('EventBundle:Event')->findAll();
