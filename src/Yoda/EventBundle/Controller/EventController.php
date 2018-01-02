@@ -142,6 +142,9 @@ class EventController extends Controller
             throw $this->createNotFoundException('Unable to find Event entity.');
         }
 
+        $this->enforceOwnerSecurity( $entity );
+
+
         $editForm = $this->createEditForm($entity);
         $deleteForm = $this->createDeleteForm($id);
 
@@ -186,6 +189,8 @@ class EventController extends Controller
             throw $this->createNotFoundException('Unable to find Event entity.');
         }
 
+        $this->enforceOwnerSecurity( $entity );
+
         $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createEditForm($entity);
         $editForm->handleRequest($request);
@@ -221,6 +226,8 @@ class EventController extends Controller
                 throw $this->createNotFoundException('Unable to find Event entity.');
             }
 
+            $this->enforceOwnerSecurity( $entity );
+
             $em->remove($entity);
             $em->flush();
         }
@@ -253,6 +260,16 @@ class EventController extends Controller
 
             throw new AccessDeniedException( 'Need ' . $role );
 
+        }
+    }
+
+    private function enforceOwnerSecurity( Event $event )
+    {
+        $user = $this->getUser();
+
+        if( $user != $event->getOwner() )
+        {
+            throw new AccessDeniedException('You do not own this!');
         }
     }
 }

@@ -2,13 +2,14 @@
 
 namespace Yoda\UserBundle\DataFixtures\ORM;
 
-use Doctrine\Common\DataFixtures\FixtureInterface;
+ use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Symfony\Component\DependencyInjection\ContainerAwareInterface;
 use Yoda\UserBundle\Entity\User;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
 
-class LoadUsers implements FixtureInterface, ContainerAwareInterface
+class LoadUsers implements FixtureInterface, ContainerAwareInterface, OrderedFixtureInterface
 {
     /**
      * @var ContainerInterface
@@ -48,4 +49,11 @@ class LoadUsers implements FixtureInterface, ContainerAwareInterface
     {
         $this->container = $container;
     }
+
+    public function getOrder()
+    {
+        return 10;
+    }
+
+
 }

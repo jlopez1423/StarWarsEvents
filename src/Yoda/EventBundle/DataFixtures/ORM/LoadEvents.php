@@ -5,11 +5,13 @@ namespace Yoda\EventBundle\DataFixtures\ORM;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\Persistence\ObjectManager;
 use Yoda\EventBundle\Entity\Event;
-
-class LoadEvents implements FixtureInterface
+use Doctrine\Common\DataFixtures\OrderedFixtureInterface;
+class LoadEvents implements FixtureInterface, OrderedFixtureInterface
 {
     public function load(ObjectManager $manager)
     {
+        $wayne = $manager->getRepository( 'UserBundle:User' )
+                    ->findOneByUsernameOrEmail('wayne');
 
         $event1 = new Event();
         $event1->setName('Darth\'s Birthday Party!');
@@ -25,6 +27,14 @@ class LoadEvents implements FixtureInterface
         $event2->setDetails('Ewok pies! Support the rebellion!');
         $manager->persist($event2);
 
+        $event1->setOwner( $wayne );
+        $event2->setOwner( $wayne );
+
         $manager->flush();
+    }
+
+    public function getOrder()
+    {
+        return 20;
     }
 }
