@@ -4,8 +4,6 @@ namespace Yoda\EventBundle\Controller;
 
 use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 
@@ -254,22 +252,11 @@ class EventController extends Controller
 
     private function enforceUserSecurity( $role = 'ROLE_USER' )
     {
-        $securityContext = $this->get( 'security.context' );
-
-        if ( !$securityContext->isGranted( $role ) ) {
+        if ( !$this->getSecurityContext()->isGranted( $role ) ) {
 
             throw new AccessDeniedException( 'Need ' . $role );
 
         }
     }
 
-    private function enforceOwnerSecurity( Event $event )
-    {
-        $user = $this->getUser();
-
-        if( $user != $event->getOwner() )
-        {
-            throw new AccessDeniedException('You do not own this!');
-        }
-    }
 }
