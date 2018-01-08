@@ -19,18 +19,15 @@ $container->enterScope( 'request' );
 $container->set( 'request', $request );
 
 //All the set up is done!
+use Doctrine\ORM\EntityManager;
 
-
-use Yoda\EventBundle\Entity\Event;
-
-$event = new Event();
-$event->setName( 'Darth\'s surprise birthday party' );
-$event->setLocation( 'Deathstar' );
-$event->setTime( new \DateTime( 'tomorrow noon' ) );
-//$event->setDetails( 'Ha Darth HATES surprises!!!' );
-
+/**@var EntityManager $em */
 $em = $container->get( 'doctrine' )->getManager();
 
-$em->persist( $event );
+$wayne = $em->getRepository( 'UserBundle:User' )
+    ->findOneByUsernameOrEmail('wayne' );
 
-$em->flush();
+foreach ( $wayne->getEvents() as $event )
+{
+    var_dump( $event->getName() );
+}
