@@ -13,12 +13,14 @@ use Doctrine\ORM\EntityRepository;
 class EventRepository extends EntityRepository
 {
 
-    //Anything written in here gets precedence over the EntityRepository base class
-//    public function findAll()
-//    {
-//
-//        die( 'NOOOOO!' );
-//
-//    }
+    public function getUpcomingEvents()
+    {
+        return $this->createQueryBuilder('e')
+            ->addOrderBy('e.time', 'ASC')
+            ->andWhere('e.time > :now')
+            ->setParameter('now', new \DateTime())
+            ->getQuery()
+            ->execute();
+    }
 
 }
