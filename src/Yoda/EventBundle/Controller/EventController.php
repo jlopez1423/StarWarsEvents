@@ -38,13 +38,14 @@ class EventController extends Controller
             'entities' => $entities,
         );
     }
+
     /**
      * Creates a new Event entity.
      *
      */
     public function createAction(Request $request)
     {
-        $this->enforceUserSecurity( 'ROLE_EVENT_CREATE' );
+        $this->enforceUserSecurity('ROLE_EVENT_CREATE');
 
         $entity = new Event();
         $form = $this->createCreateForm($entity);
@@ -52,18 +53,18 @@ class EventController extends Controller
 
         if ($form->isValid()) {
             $user = $this->getUser();
-            $entity->setOwner( $user );
+            $entity->setOwner($user);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($entity);
             $em->flush();
 
-            return $this->redirect($this->generateUrl('event_show', array('slug' => $entity->getSlug() ) ) );
+            return $this->redirect($this->generateUrl('event_show', array('slug' => $entity->getSlug())));
         }
 
         return $this->render('EventBundle:Event:new.html.twig', array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         ));
     }
 
@@ -95,11 +96,11 @@ class EventController extends Controller
         $this->enforceUserSecurity();
 
         $entity = new Event();
-        $form   = $this->createCreateForm($entity);
+        $form = $this->createCreateForm($entity);
 
         return $this->render('EventBundle:Event:new.html.twig', array(
             'entity' => $entity,
-            'form'   => $form->createView(),
+            'form' => $form->createView(),
         ));
     }
 
@@ -112,16 +113,16 @@ class EventController extends Controller
         $em = $this->getDoctrine()->getManager();
 
         $entity = $em->getRepository('EventBundle:Event')
-            ->findOneBy( array( 'slug' => $slug ) );
+            ->findOneBy(array('slug' => $slug));
 
         if (!$entity) {
             throw $this->createNotFoundException('Unable to find Event entity.');
         }
 
-        $deleteForm = $this->createDeleteForm( $entity->getId() );
+        $deleteForm = $this->createDeleteForm($entity->getId());
 
         return $this->render('EventBundle:Event:show.html.twig', array(
-            'entity'      => $entity,
+            'entity' => $entity,
             'delete_form' => $deleteForm->createView(),
         ));
     }
@@ -142,26 +143,26 @@ class EventController extends Controller
             throw $this->createNotFoundException('Unable to find Event entity.');
         }
 
-        $this->enforceOwnerSecurity( $entity );
+        $this->enforceOwnerSecurity($entity);
 
 
         $editForm = $this->createEditForm($entity);
         $deleteForm = $this->createDeleteForm($id);
 
         return $this->render('EventBundle:Event:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
     }
 
     /**
-    * Creates a form to edit a Event entity.
-    *
-    * @param Event $entity The entity
-    *
-    * @return \Symfony\Component\Form\Form The form
-    */
+     * Creates a form to edit a Event entity.
+     *
+     * @param Event $entity The entity
+     *
+     * @return \Symfony\Component\Form\Form The form
+     */
     private function createEditForm(Event $entity)
     {
         $form = $this->createForm(new EventType(), $entity, array(
@@ -173,6 +174,7 @@ class EventController extends Controller
 
         return $form;
     }
+
     /**
      * Edits an existing Event entity.
      *
@@ -189,7 +191,7 @@ class EventController extends Controller
             throw $this->createNotFoundException('Unable to find Event entity.');
         }
 
-        $this->enforceOwnerSecurity( $entity );
+        $this->enforceOwnerSecurity($entity);
 
         $deleteForm = $this->createDeleteForm($id);
         $editForm = $this->createEditForm($entity);
@@ -202,11 +204,12 @@ class EventController extends Controller
         }
 
         return $this->render('EventBundle:Event:edit.html.twig', array(
-            'entity'      => $entity,
-            'edit_form'   => $editForm->createView(),
+            'entity' => $entity,
+            'edit_form' => $editForm->createView(),
             'delete_form' => $deleteForm->createView(),
         ));
     }
+
     /**
      * Deletes a Event entity.
      *
@@ -226,13 +229,39 @@ class EventController extends Controller
                 throw $this->createNotFoundException('Unable to find Event entity.');
             }
 
-            $this->enforceOwnerSecurity( $entity );
+            $this->enforceOwnerSecurity($entity);
 
             $em->remove($entity);
             $em->flush();
         }
 
         return $this->redirect($this->generateUrl('event'));
+    }
+
+    public function attendAction($id)
+    {
+
+        $em = $this->getDoctrine()->getManager();
+        $event = $em->getRepository('EventBundle:Event')->find($id);
+
+        if (!$event) {
+            throw $this->createNotFoundException('Unable to find Event Entity');
+        }
+
+        $event->getAttendees()->add($this->getUser());
+        $em->persist($event);
+        $em->flush();
+
+        $url = $this->generateUrl('event_show', array(
+            'slug' => $event->getSlug()
+        ));
+
+        return $this->redirect( $url );
+    }
+
+    public function unattendAction($id)
+    {
+
     }
 
     /**
@@ -248,15 +277,14 @@ class EventController extends Controller
             ->setAction($this->generateUrl('event_delete', array('id' => $id)))
             ->setMethod('DELETE')
             ->add('submit', 'submit', array('label' => 'Delete'))
-            ->getForm()
-        ;
+            ->getForm();
     }
 
-    private function enforceUserSecurity( $role = 'ROLE_USER' )
+    private function enforceUserSecurity($role = 'ROLE_USER')
     {
-        if ( !$this->getSecurityContext()->isGranted( $role ) ) {
+        if (!$this->getSecurityContext()->isGranted($role)) {
 
-            throw new AccessDeniedException( 'Need ' . $role );
+            throw new AccessDeniedException('Need ' . $role);
 
         }
     }

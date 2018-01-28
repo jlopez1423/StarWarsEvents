@@ -2,6 +2,7 @@
 
 namespace Yoda\EventBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Yoda\UserBundle\Entity\User;
 
@@ -84,6 +85,17 @@ class Event
     private $updatedAt;
 
     /**
+     * @ORM\ManyToMany(targetEntity="Yoda\UserBundle\Entity\User")
+     */
+    private $attendees;
+
+
+    public function __construct()
+    {
+        $this->attendees = new ArrayCollection();
+    }
+
+    /**
      * @return \DateTime
      */
     public function getCreatedAt()
@@ -102,7 +114,7 @@ class Event
     /**
      * Get id
      *
-     * @return integer 
+     * @return integer
      */
     public function getId()
     {
@@ -125,7 +137,7 @@ class Event
     /**
      * Get name
      *
-     * @return string 
+     * @return string
      */
     public function getName()
     {
@@ -148,7 +160,7 @@ class Event
     /**
      * Get time
      *
-     * @return \DateTime 
+     * @return \DateTime
      */
     public function getTime()
     {
@@ -171,7 +183,7 @@ class Event
     /**
      * Get location
      *
-     * @return string 
+     * @return string
      */
     public function getLocation()
     {
@@ -194,7 +206,7 @@ class Event
     /**
      * Get details
      *
-     * @return string 
+     * @return string
      */
     public function getDetails()
     {
@@ -233,5 +245,11 @@ class Event
         $this->slug = $slug;
     }
 
-
+    /**
+     * @return ArrayCollection
+     */
+    public function getAttendees()
+    {
+        return $this->attendees;
+    }
 }
