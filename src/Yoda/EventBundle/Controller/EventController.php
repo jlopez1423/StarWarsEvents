@@ -248,7 +248,11 @@ class EventController extends Controller
             throw $this->createNotFoundException('Unable to find Event Entity');
         }
 
-        $event->getAttendees()->add($this->getUser());
+        if (!$event->hasAttendee($this->getUser())) {
+
+            $event->getAttendees()->add($this->getUser());
+        }
+
         $em->persist($event);
         $em->flush();
 
@@ -256,12 +260,31 @@ class EventController extends Controller
             'slug' => $event->getSlug()
         ));
 
-        return $this->redirect( $url );
+        return $this->redirect($url);
     }
 
     public function unattendAction($id)
     {
+        $em = $this->getDoctrine()->getManager();
+        $event = $em->getRepository('EventBundle:Event')->find($id);
 
+        if (!$event) {
+            throw $this->createNotFoundException('Unable to find Event Entity');
+        }
+
+        if ($event->hasAttendee($this->getUser())) {
+
+            $event->getAttendees()->removeElement($this->getUser());
+        }
+
+        $em->persist($event);
+        $em->flush();
+
+        $url = $this->generateUrl('event_show', array(
+            'slug' => $event->getSlug()
+        ));
+
+        return $this->redirect($url);
     }
 
     /**
