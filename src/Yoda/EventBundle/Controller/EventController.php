@@ -6,7 +6,7 @@ use Symfony\Component\Finder\Exception\AccessDeniedException;
 use Symfony\Component\HttpFoundation\Request;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Template;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-
+use Symfony\Component\HttpFoundation\Response;
 
 use Yoda\EventBundle\Entity\Event;
 use Yoda\EventBundle\Form\EventType;
@@ -238,7 +238,7 @@ class EventController extends Controller
         return $this->redirect($this->generateUrl('event'));
     }
 
-    public function attendAction($id)
+    public function attendAction($id, $format)
     {
 
         $em = $this->getDoctrine()->getManager();
@@ -255,6 +255,14 @@ class EventController extends Controller
 
         $em->persist($event);
         $em->flush();
+
+        if ($format == 'json'){
+            $data = array(
+                'attending' => true
+            );
+            $response = new Response(json_encode($data));
+            return $response;
+        }
 
         $url = $this->generateUrl('event_show', array(
             'slug' => $event->getSlug()
