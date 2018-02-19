@@ -18,9 +18,7 @@ class EventRepository extends EntityRepository
         $qb =  $this->createQueryBuilder('e')
             ->addOrderBy('e.time', 'ASC')
             ->andWhere('e.time > :now')
-            ->setParameter('now', new \DateTime())
-            ->getQuery()
-            ->execute();
+            ->setParameter('now', new \DateTime());
 
         if ($max) {
             $qb->setMaxResults($max);
@@ -31,4 +29,15 @@ class EventRepository extends EntityRepository
             ->execute();
     }
 
+    /**
+     * @return Event[]
+     */
+    public function getRecentlyUpdatedEvents()
+    {
+        return $this->createQueryBuilder('e')
+            ->andWhere('e.createdAt > :since')
+            ->setParameter('since', new \DateTime('24 hours ago'))
+            ->getQuery()
+            ->execute();
+    }
 }
