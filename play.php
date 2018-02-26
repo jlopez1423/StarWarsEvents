@@ -26,8 +26,11 @@ $em = $container->get( 'doctrine' )->getManager();
 
 $wayne = $em->getRepository( 'UserBundle:User' )
     ->findOneByUsernameOrEmail('wayne' );
-
-foreach ( $wayne->getEvents() as $event )
-{
-    var_dump( $event->getName() );
-}
+//
+//foreach ( $wayne->getEvents() as $event )
+//{
+//    var_dump( $event->getName() );
+//}
+$wayne->setPlainPassword('newpass');
+$em->persist($wayne);
+$em->flush();
