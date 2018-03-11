@@ -7,7 +7,7 @@ imports:
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
-
+    our_assets_version: 5-return-of-the-jedi
 framework:
     #esi: ~
     translator: { fallbacks: ['%locale%'] }
@@ -21,7 +21,7 @@ framework:
     #serializer: { enable_annotations: true }
     templating:
         engines: ['twig']
-        assets_version: 5-return-of-the-jedi
+        assets_version: %our_assets_version%
         assets_version_format: "%%s?v=%%s"
 #        assets_base_url: //eveilempireassets.com
     default_locale: '%locale%'
